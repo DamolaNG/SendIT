@@ -1,0 +1,268 @@
+/**
+ * Admin Controller
+ * 
+ * This controller handles admin-only operations:
+ * - Updating order status
+ * - Updating order location
+ * - Managing all orders
+ * - User management
+ * 
+ * These endpoints require admin authentication.
+ */
+
+import { Request, Response } from 'express';
+import { OrderModel } from '../models/Order';
+import { UserModel } from '../models/User';
+import { UpdateOrderStatusRequest, ApiResponse } from '../types';
+
+export class AdminController {
+  private orderModel: OrderModel;
+  private userModel: UserModel;
+
+  constructor() {
+    this.orderModel = new OrderModel();
+    this.userModel = new UserModel();
+  }
+
+  /**
+   * Get all orders (admin only)
+   * GET /api/admin/orders
+   */
+  getAllOrders = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const orders = await this.orderModel.getAllOrders();
+
+      res.status(200).json({
+        success: true,
+        data: orders,
+        message: 'All orders retrieved successfully'
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve orders'
+      });
+    }
+  };
+
+  /**
+   * Update order status (admin only)
+   * PUT /api/admin/orders/:id/status
+   */
+  updateOrderStatus = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const orderId = req.params.id;
+      const statusData: UpdateOrderStatusRequest = req.body;
+
+      if (!statusData.status) {
+        res.status(400).json({
+          success: false,
+          message: 'Status is required'
+        });
+        return;
+      }
+
+      const updatedOrder = await this.orderModel.updateOrderStatus(
+        orderId,
+        statusData.status,
+        statusData.currentLocation
+      );
+
+      if (!updatedOrder) {
+        res.status(404).json({
+          success: false,
+          message: 'Order not found'
+        });
+        return;
+      }
+
+      // In a real application, you would send email notifications here
+      // await this.sendStatusUpdateNotification(updatedOrder);
+
+      res.status(200).json({
+        success: true,
+        data: updatedOrder,
+        message: 'Order status updated successfully'
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to update order status'
+      });
+    }
+  };
+
+  /**
+   * Update order location (admin only)
+   * PUT /api/admin/orders/:id/location
+   */
+  updateOrderLocation = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const orderId = req.params.id;
+      const { currentLocation } = req.body;
+
+      if (!currentLocation) {
+        res.status(400).json({
+          success: false,
+          message: 'Current location is required'
+        });
+        return;
+      }
+
+      const order = await this.orderModel.getOrderById(orderId);
+      if (!order) {
+        res.status(404).json({
+          success: false,
+          message: 'Order not found'
+        });
+        return;
+      }
+
+      // Update order with new location
+      const updatedOrder = await this.orderModel.updateOrderStatus(
+        orderId,
+        order.status,
+        currentLocation
+      );
+
+      if (!updatedOrder) {
+        res.status(500).json({
+          success: false,
+          message: 'Failed to update order location'
+        });
+        return;
+      }
+
+      // In a real application, you would send email notifications here
+      // await this.sendLocationUpdateNotification(updatedOrder);
+
+      res.status(200).json({
+        success: true,
+        data: updatedOrder,
+        message: 'Order location updated successfully'
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to update order location'
+      });
+    }
+  };
+
+  /**
+   * Get order statistics (admin only)
+   * GET /api/admin/stats
+   */
+  getOrderStats = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const orders = await this.orderModel.getAllOrders();
+      
+      const stats = {
+        totalOrders: orders.length,
+        pendingOrders: orders.filter(o => o.status === 'pending').length,
+        inTransitOrders: orders.filter(o => o.status === 'in_transit').length,
+        deliveredOrders: orders.filter(o => o.status === 'delivered').length,
+        cancelledOrders: orders.filter(o => o.status === 'cancelled').length,
+        totalRevenue: orders.reduce((sum, order) => sum + order.price, 0),
+        averageOrderValue: orders.length > 0 ? orders.reduce((sum, order) => sum + order.price, 0) / orders.length : 0
+      };
+
+      res.status(200).json({
+        success: true,
+        data: stats,
+        message: 'Order statistics retrieved successfully'
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve order statistics'
+      });
+    }
+  };
+
+  /**
+   * Get all users (admin only)
+   * GET /api/admin/users
+   */
+  getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const users = await this.userModel.getAllUsers();
+
+      res.status(200).json({
+        success: true,
+        data: users,
+        message: 'All users retrieved successfully'
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve users'
+      });
+    }
+  };
+
+  /**
+   * Create admin user (for initial setup)
+   * POST /api/admin/create-admin
+   */
+  createAdminUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { email, password, firstName, lastName, phone } = req.body;
+
+      if (!email || !password || !firstName || !lastName) {
+        res.status(400).json({
+          success: false,
+          message: 'Email, password, first name, and last name are required'
+        });
+        return;
+      }
+
+      // Create user with admin role
+      const userData = {
+        email,
+        password,
+        firstName,
+        lastName,
+        phone: phone || '',
+        role: 'admin' as const
+      };
+
+      const user = await this.userModel.createUser(userData);
+
+      res.status(201).json({
+        success: true,
+        data: user,
+        message: 'Admin user created successfully'
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to create admin user'
+      });
+    }
+  };
+
+  /**
+   * Send status update notification (placeholder)
+   * In a real application, this would integrate with an email service
+   */
+  private async sendStatusUpdateNotification(order: any): Promise<void> {
+    // This is a placeholder for email notification functionality
+    // In production, you would integrate with services like:
+    // - SendGrid
+    // - AWS SES
+    // - Mailgun
+    // - Nodemailer with SMTP
+    
+    console.log(`Status update notification for order ${order.trackingNumber}: ${order.status}`);
+  }
+
+  /**
+   * Send location update notification (placeholder)
+   * In a real application, this would integrate with an email service
+   */
+  private async sendLocationUpdateNotification(order: any): Promise<void> {
+    // This is a placeholder for email notification functionality
+    console.log(`Location update notification for order ${order.trackingNumber}: ${order.currentLocation?.address}`);
+  }
+}

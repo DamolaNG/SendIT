@@ -1,0 +1,45 @@
+{
+  "name": "sendit-parcel-tracker",
+  "version": "1.0.0",
+  "description": "A comprehensive parcel delivery tracking web application",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "serve": "http-server . -p 3000",
+    "test": "jest",
+    "setup": "node scripts/setup.js",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "parcel",
+    "delivery",
+    "tracking",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.23",
+    "@types/jest": "^29.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.0.0",
+    "@types/nodemailer": "^6.4.20",
+    "@types/uuid": "^9.0.8",
+    "http-server": "^14.1.1",
+    "jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.10.1",
+    "uuid": "^9.0.1"
+  }
+}
