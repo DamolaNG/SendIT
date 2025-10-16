@@ -13,7 +13,7 @@
 
 import { Request, Response } from 'express';
 import { AuthService } from '../services/AuthService';
-import { RegisterRequest, LoginRequest, ApiResponse } from '../types';
+import { RegisterRequest, LoginRequest } from '../types';
 
 export class AuthController {
   private authService: AuthService;
@@ -156,7 +156,7 @@ export class AuthController {
    * Logout user (client-side token removal)
    * POST /api/auth/logout
    */
-  logout = async (req: Request, res: Response): Promise<void> => {
+  logout = async (_req: Request, res: Response): Promise<void> => {
     // In JWT-based authentication, logout is handled client-side
     // by removing the token from storage
     res.status(200).json({

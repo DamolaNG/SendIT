@@ -10,7 +10,7 @@
 
 import { Request, Response } from 'express';
 import { ParcelModel } from '../models/Parcel';
-import { CreateParcelRequest, ApiResponse } from '../types';
+import { CreateParcelRequest } from '../types';
 
 export class ParcelController {
   private parcelModel: ParcelModel;

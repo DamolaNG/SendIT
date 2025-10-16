@@ -12,7 +12,7 @@
  * 3. Set up billing (Google Maps requires payment after free tier)
  */
 
-import { Location, DistanceMatrixResponse, GoogleMapsConfig } from '../types';
+import { Location, DistanceMatrixResponse } from '../types';
 
 export class GoogleMapsService {
   private apiKey: string;

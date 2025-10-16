@@ -10,7 +10,7 @@
 
 import { Request, Response } from 'express';
 import { OrderModel } from '../models/Order';
-import { CreateOrderRequest, UpdateOrderDestinationRequest, UpdateOrderStatusRequest, ApiResponse } from '../types';
+import { CreateOrderRequest, UpdateOrderDestinationRequest, UpdateOrderStatusRequest } from '../types';
 
 export class OrderController {
   private orderModel: OrderModel;
@@ -349,7 +349,7 @@ export class OrderController {
    * Get all orders (admin only)
    * GET /api/orders/all
    */
-  getAllOrders = async (req: Request, res: Response): Promise<void> => {
+  getAllOrders = async (_req: Request, res: Response): Promise<void> => {
     try {
       const orders = await this.orderModel.getAllOrders();
 

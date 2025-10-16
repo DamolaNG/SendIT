@@ -99,7 +99,7 @@ export class AuthMiddleware {
    * This middleware doesn't fail if no token is provided
    * Useful for endpoints that work for both authenticated and anonymous users
    */
-  optionalAuth = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  optionalAuth = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     try {
       const authHeader = req.headers.authorization;
       

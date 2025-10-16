@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api', routes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({
     success: true,
     message: 'SendIT API is running',
@@ -48,12 +48,12 @@ app.get('/health', (req, res) => {
 });
 
 // Root endpoint
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // 404 handler for undefined routes
-app.use('*', (req, res) => {
+app.use('*', (_req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route not found'
@@ -61,7 +61,7 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((error: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', error);
   
   res.status(error.status || 500).json({

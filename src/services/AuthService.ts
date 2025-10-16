@@ -24,13 +24,11 @@ import {
 export class AuthService {
   private userModel: UserModel;
   private jwtSecret: string;
-  private jwtExpiresIn: string;
 
   constructor() {
     this.userModel = new UserModel();
     // In production, these should come from environment variables
     this.jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
-    this.jwtExpiresIn = process.env.JWT_EXPIRES_IN || '24h';
   }
 
   /**
@@ -102,13 +100,13 @@ export class AuthService {
    * @returns string - JWT token
    */
   private generateToken(userId: string, email: string, role: UserRole): string {
-    const payload: Omit<JWTPayload, 'iat' | 'exp'> = {
+    const payload = {
       userId,
       email,
       role
     };
 
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: this.jwtExpiresIn });
+    return jwt.sign(payload, this.jwtSecret, { expiresIn: '24h' });
   }
 
   /**

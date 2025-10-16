@@ -13,7 +13,7 @@
 import { Request, Response } from 'express';
 import { OrderModel } from '../models/Order';
 import { UserModel } from '../models/User';
-import { UpdateOrderStatusRequest, ApiResponse } from '../types';
+import { UpdateOrderStatusRequest } from '../types';
 
 export class AdminController {
   private orderModel: OrderModel;
@@ -28,7 +28,7 @@ export class AdminController {
    * Get all orders (admin only)
    * GET /api/admin/orders
    */
-  getAllOrders = async (req: Request, res: Response): Promise<void> => {
+  getAllOrders = async (_req: Request, res: Response): Promise<void> => {
     try {
       const orders = await this.orderModel.getAllOrders();
 
@@ -153,7 +153,7 @@ export class AdminController {
    * Get order statistics (admin only)
    * GET /api/admin/stats
    */
-  getOrderStats = async (req: Request, res: Response): Promise<void> => {
+  getOrderStats = async (_req: Request, res: Response): Promise<void> => {
     try {
       const orders = await this.orderModel.getAllOrders();
       
@@ -184,7 +184,7 @@ export class AdminController {
    * Get all users (admin only)
    * GET /api/admin/users
    */
-  getAllUsers = async (req: Request, res: Response): Promise<void> => {
+  getAllUsers = async (_req: Request, res: Response): Promise<void> => {
     try {
       const users = await this.userModel.getAllUsers();
 
@@ -242,27 +242,4 @@ export class AdminController {
     }
   };
 
-  /**
-   * Send status update notification (placeholder)
-   * In a real application, this would integrate with an email service
-   */
-  private async sendStatusUpdateNotification(order: any): Promise<void> {
-    // This is a placeholder for email notification functionality
-    // In production, you would integrate with services like:
-    // - SendGrid
-    // - AWS SES
-    // - Mailgun
-    // - Nodemailer with SMTP
-    
-    console.log(`Status update notification for order ${order.trackingNumber}: ${order.status}`);
-  }
-
-  /**
-   * Send location update notification (placeholder)
-   * In a real application, this would integrate with an email service
-   */
-  private async sendLocationUpdateNotification(order: any): Promise<void> {
-    // This is a placeholder for email notification functionality
-    console.log(`Location update notification for order ${order.trackingNumber}: ${order.currentLocation?.address}`);
-  }
 }
