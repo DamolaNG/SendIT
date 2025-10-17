@@ -13,14 +13,14 @@ This guide will help you set up MongoDB for your SendIT parcel delivery tracking
 1. **Choose Cloud Provider**: AWS, Google Cloud, or Azure
 2. **Select Region**: Choose closest to your location
 3. **Cluster Tier**: Select M0 (Free) for development
-4. **Cluster Name**: `sendit-cluster` (or your choice)
+4. **Cluster Name**: `SendIT-Damola-Learningtool` (or your choice)
 5. Click "Create Cluster"
 
 ### **Step 3: Configure Database Access**
 1. Go to "Database Access" in the left sidebar
 2. Click "Add New Database User"
 3. **Authentication Method**: Password
-4. **Username**: `sendit-user` (or your choice)
+4. **Username**: `User_1` (or your choice)
 5. **Password**: Generate a secure password (save it!)
 6. **Database User Privileges**: Read and write to any database
 7. Click "Add User"
@@ -50,6 +50,7 @@ Edit your `.env` file:
 MONGODB_URI=mongodb+srv://sendit-user:YOUR_PASSWORD@sendit-cluster.xxxxx.mongodb.net/sendit_db?retryWrites=true&w=majority
 MONGODB_DATABASE=sendit_db
 ```
+
 
 **Replace:**
 - `sendit-user` with your database username
