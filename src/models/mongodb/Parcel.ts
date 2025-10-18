@@ -5,7 +5,6 @@
  */
 
 import mongoose, { Document, Schema } from 'mongoose';
-import { Parcel } from '../../types';
 
 export interface IParcel extends Document {
   userId: mongoose.Types.ObjectId;

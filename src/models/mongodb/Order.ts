@@ -5,7 +5,7 @@
  */
 
 import mongoose, { Document, Schema } from 'mongoose';
-import { DeliveryOrder, OrderStatus, Location } from '../../types';
+import { OrderStatus, Location } from '../../types';
 
 export interface IOrder extends Document {
   userId: mongoose.Types.ObjectId;
