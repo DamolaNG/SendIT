@@ -9,7 +9,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 import { User, UserRole } from '../../types';
 
 // Extend the User interface to include MongoDB Document methods
-export interface IUser extends User, Document {}
+export interface IUser extends Omit<User, 'id'>, Document {}
 
 const UserSchema = new Schema<IUser>({
   email: {
@@ -65,9 +65,9 @@ UserSchema.virtual('fullName').get(function() {
 // Ensure virtual fields are serialized
 UserSchema.set('toJSON', {
   virtuals: true,
-  transform: function(doc, ret) {
-    delete ret.password; // Never include password in JSON output
-    delete ret.__v;
+  transform: function(_doc, ret) {
+    delete (ret as any).password; // Never include password in JSON output
+    delete (ret as any).__v;
     return ret;
   }
 });

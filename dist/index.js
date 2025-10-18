@@ -17,6 +17,7 @@ const server = app_1.default.listen(PORT, () => {
     console.log(`📱 Health check: http://localhost:${PORT}/health`);
     console.log(`🌐 API endpoints: http://localhost:${PORT}/api`);
     console.log(`📦 Frontend: http://localhost:${PORT}`);
+    console.log(`💾 Using in-memory storage (data will reset on restart)`);
 });
 // Graceful shutdown handling
 process.on('SIGTERM', () => {

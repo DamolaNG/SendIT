@@ -7,7 +7,22 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { DeliveryOrder, OrderStatus, Location } from '../../types';
 
-export interface IOrder extends DeliveryOrder, Document {}
+export interface IOrder extends Document {
+  userId: mongoose.Types.ObjectId;
+  parcelId: mongoose.Types.ObjectId;
+  pickupLocation: Location;
+  destinationLocation: Location;
+  currentLocation?: Location;
+  status: OrderStatus;
+  estimatedDelivery: Date;
+  actualDelivery?: Date;
+  distance?: number;
+  duration?: number;
+  price: number;
+  trackingNumber: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const LocationSchema = new Schema<Location>({
   latitude: {
@@ -53,14 +68,12 @@ const OrderSchema = new Schema<IOrder>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: true
   },
   parcelId: {
     type: Schema.Types.ObjectId,
     ref: 'Parcel',
-    required: true,
-    index: true
+    required: true
   },
   pickupLocation: {
     type: LocationSchema,

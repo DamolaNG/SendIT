@@ -1,0 +1,1 @@
+{"version":3,"file":"User.d.ts","sourceRoot":"","sources":["../../../src/models/mongodb.disabled/User.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,OAAO,QAAQ,EAAE,EAAE,QAAQ,EAAU,MAAM,UAAU,CAAC;AACtD,OAAO,EAAE,IAAI,EAAY,MAAM,aAAa,CAAC;AAG7C,MAAM,WAAW,KAAM,SAAQ,IAAI,CAAC,IAAI,EAAE,IAAI,CAAC,EAAE,QAAQ;CAAG;AA8F5D,eAAO,MAAM,SAAS;;;;OAA4C,CAAC"}

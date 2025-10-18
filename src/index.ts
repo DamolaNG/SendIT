@@ -6,43 +6,29 @@
  */
 
 import app from './app';
-import Database from './config/database';
 
 const PORT = process.env.PORT || 3000;
 
-// Initialize database connection
-const db = Database.getInstance();
-
 // Start the server
-const server = app.listen(PORT, async () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 SendIT API server is running on port ${PORT}`);
   console.log(`📱 Health check: http://localhost:${PORT}/health`);
   console.log(`🌐 API endpoints: http://localhost:${PORT}/api`);
   console.log(`📦 Frontend: http://localhost:${PORT}`);
-  
-  // Connect to MongoDB
-  try {
-    await db.connect();
-    console.log(`🍃 MongoDB connected successfully`);
-  } catch (error) {
-    console.error('❌ Failed to connect to MongoDB:', error);
-    console.log('⚠️  Running without database (in-memory mode)');
-  }
+  console.log(`💾 Using in-memory storage (data will reset on restart)`);
 });
 
 // Graceful shutdown handling
-process.on('SIGTERM', async () => {
+process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
-  await db.disconnect();
   server.close(() => {
     console.log('Process terminated');
     process.exit(0);
   });
 });
 
-process.on('SIGINT', async () => {
+process.on('SIGINT', () => {
   console.log('SIGINT received, shutting down gracefully');
-  await db.disconnect();
   server.close(() => {
     console.log('Process terminated');
     process.exit(0);

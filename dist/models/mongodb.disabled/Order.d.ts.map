@@ -1,0 +1,1 @@
+{"version":3,"file":"Order.d.ts","sourceRoot":"","sources":["../../../src/models/mongodb.disabled/Order.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,QAAQ,EAAE,EAAE,QAAQ,EAAU,MAAM,UAAU,CAAC;AACtD,OAAO,EAAE,aAAa,EAAyB,MAAM,aAAa,CAAC;AAEnE,MAAM,WAAW,MAAO,SAAQ,IAAI,CAAC,aAAa,EAAE,IAAI,CAAC,EAAE,QAAQ;CAAG;AA4KtE,eAAO,MAAM,UAAU;;;;OAA+C,CAAC"}

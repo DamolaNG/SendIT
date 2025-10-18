@@ -7,14 +7,26 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { Parcel } from '../../types';
 
-export interface IParcel extends Parcel, Document {}
+export interface IParcel extends Document {
+  userId: mongoose.Types.ObjectId;
+  description: string;
+  weight: number;
+  dimensions: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  value: number;
+  fragile: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const ParcelSchema = new Schema<IParcel>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: true
   },
   description: {
     type: String,
